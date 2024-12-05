@@ -1,6 +1,7 @@
 import argparse
 import os
 import subprocess
+import hashlib
 import base64
 import glob
 import json
@@ -47,23 +48,23 @@ def main(args):
                 raw_bytes = base64.b64encode(raw_bytes).decode('utf-8')
             
                 each_function = each_function.split()[-1]
-                disass = r2.cmd(f'pdf @ {each_function}').strip()
-                disass = bytes(disass.encode())
-                disass = base64.b64encode(disass).decode('utf-8')
+                disass_x = r2.cmd(f'pdf @ {each_function}').strip()
+                disass_y = bytes(disass_x.encode())
+                disass_z = base64.b64encode(disass_y).decode('utf-8')
 
                 func_info[start_addr] = { \
                     'name': name,
                     'start': start_addr,
                     'end': start_addr + size,
                     'bytes': raw_bytes,
-                    'disassembly': disass
+                    'disassembly': disass_z
                 }
                     
             if len(func_info) != 0:
-                output_dir = binary.replace(args.input_path, args.output_path)
-                dir_path = Path(output_dir)
-                dir_path.mkdir(parents=True, exist_ok=True)
-
+                dir_path = os.path.join(args.output_path,
+                                        os.path.basename(binary) + "_" + \
+                                        hashlib.md5(binary.encode()).hexdigest())
+                os.mkdir(dir_path)
             for func_addr, values in func_info.items():
                 try:
                     name = values['name']
@@ -80,6 +81,11 @@ if __name__ == '__main__':
     parser.add_argument("--output_path", type=str, default = "/output_data", help="Output path")
     parser.add_argument("--temp_dir", type=str, default = "/temp", help="Output path")
 
+    
     args = parser.parse_args()
+
+    if not os.path.isdir(args.output_path):
+        os.mkdir(args.output_path)
+
     main(args)
 
