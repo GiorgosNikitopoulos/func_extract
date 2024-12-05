@@ -10,9 +10,9 @@ import r2pipe
 
 def main(args):
     #Iterate over all directories in input_path
-    if True:
+    for directory in glob.glob(f"{args.input_path}/*"):
         #Iterate over all binary files
-        for binary in glob.glob(f"{args.input_path}/*"):
+        for binary in glob.glob(f"{directory}/*"):
             print(f"Found binary {binary}")
             #radare analyse the app and enumerate all functions
             r2 = r2pipe.open(binary)
