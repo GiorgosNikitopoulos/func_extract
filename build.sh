@@ -1,1 +1,1 @@
-sudo docker build -t func_extract .
+docker build -t func_extract .

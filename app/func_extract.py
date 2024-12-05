@@ -13,12 +13,12 @@ def main(args):
     if True:
         #Iterate over all binary files
         for binary in glob.glob(f"{args.input_path}/*"):
-            print(binary)
+            print(f"Found binary {binary}")
             #radare analyse the app and enumerate all functions
             r2 = r2pipe.open(binary)
             r2.cmd('aa')
             functions = r2.cmd('afl').splitlines()
-
+            print(f"Found {len(functions)} functions")
 
             func_info = {}
             disasses = {}
