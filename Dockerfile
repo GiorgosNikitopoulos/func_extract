@@ -33,7 +33,7 @@ WORKDIR /app
 
 # Define the command to run when the container starts
 ##CMD ["tail", "-f", "/dev/null"]
-CMD ["python3.7", "func_extract.py"]
+CMD ["python3.7", "func_extract.py", "--input_path", "/input_data", "--output_path", "/output_data"]
 #"--polling_time", "60", "--schedule_time", "12"]
 
 # Expose any necessary ports

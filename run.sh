@@ -1,1 +1,1 @@
-sudo docker run --name func_extract_container -v $(pwd)/input_data:/input_data -v $(pwd)/output_data:/output_data -itd func_extract
+docker run -d --name func_extract_container-$(openssl rand -hex 8) -v $(pwd)/input_data:/input_data -v $(pwd)/output_data:/output_data -u $(id -u):$(id -g) -itd func_extract
